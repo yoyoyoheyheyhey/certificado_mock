@@ -15,3 +15,20 @@ function sendData() {
   WavesKeeper.signAndPublishTransaction(tx);
   return text;
 };
+
+function checkData() {
+    const text = document.querySelector(".data").value.split("\n")[0];
+    const certificateId = text.split(" ")[0];
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "https://nodes-testnet.wavesnodes.com/addresses/data/3MzNriGtbH3iWV2N6fKYmWVHSwv9gb5HARG/"+certificateId);
+    xhr.onload  = function() {
+        const doesExist = JSON.parse(xhr.response).value === text;
+        document.querySelector(".result").innerHTML =
+          doesExist
+            ? "<span style='color: green'><strong>certificado</strong> exists</span>"
+            : "<span style='color: red'><strong>certificado</strong> does not exist</span>";
+        return doesExist;
+    };
+    xhr.send();
+}
